@@ -9,7 +9,7 @@ export default class Home extends Component {
       <div>
         <Navbar />
         <Form />
-        <div>Compatible With: Ebay and Amazon</div>
+        <div>Compatible With: Ebay</div>
       </div>
     );
   }

@@ -1,10 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import axios from 'axios';
+
+import LoadingSpin from 'react-loading-spin';
+
+import Home from './Home';
 
 const Button = styled.button`
   background: transparent;
@@ -22,6 +27,7 @@ class Form extends Component {
       url: '',
       loading: false,
       score: '',
+      cancel: false,
     };
   }
 
@@ -31,6 +37,13 @@ class Form extends Component {
 
   showForm = () => {
     this.setState({ score: '', loading: false });
+  };
+
+  cancelSearch = () => {
+    this.setState({
+      cancel: true,
+      loading: false,
+    });
   };
 
   onSubmitURL = e => {
@@ -49,11 +62,18 @@ class Form extends Component {
         },
       })
       .then(response => {
+        const { cancel } = this.state;
         const score = response.data;
-        this.setState({
-          loading: false,
-          score,
-        });
+        if (cancel) {
+          this.setState({
+            score: '',
+          });
+        } else {
+          this.setState({
+            loading: false,
+            score,
+          });
+        }
       })
       .catch(function(error) {});
   };
@@ -72,7 +92,12 @@ class Form extends Component {
       );
     }
     if (loading) {
-      return <p>Loading...⏲️</p>;
+      return (
+        <div>
+          <LoadingSpin width="200px" size="200px" primaryColor="yellow" secondaryColor="#333" />
+          <Button onClick={this.cancelSearch}>Cancel</Button>
+        </div>
+      );
     }
 
     return (
