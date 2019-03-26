@@ -2,8 +2,18 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
 
+import styled from 'styled-components';
+
 import axios from 'axios';
 
+const Button = styled.button`
+  background: transparent;
+  border-radius: 3px;
+  border: 2px solid palevioletred;
+  color: black;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+`;
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -55,9 +65,9 @@ class Form extends Component {
       return (
         <div>
           <p>Score: {score} ✅</p>{' '}
-          <button onClick={this.showForm} type="button" className="btn btn-dark">
-            Back to Form
-          </button>
+          <Button onClick={this.showForm} type="button" className="btn btn-dark">
+            ◀️ Back to Form
+          </Button>
         </div>
       );
     }
