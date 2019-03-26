@@ -1,7 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const async = require('async');
-const wait = require('wait.for');
 
 const scraper = require('./routes/api/scraper').rating;
 
@@ -27,6 +25,7 @@ app.get('/api/scraper', async (req, res) => {
   const score = await scraper(url);
 
   res.send(score.toString());
+
   // console.log(JSON.stringify(scraper));
 
   // res.send(safetyRating);

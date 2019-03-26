@@ -83,8 +83,8 @@ const getEbayProductReviews = html => {
 const scamAlgorithm = (reviews, spamWords) => {
   let strikes = 0;
   let safetyRating = 100;
-  for (let i = 0; i < spamWords.length; i++) {
-    for (let j = 0; j < reviews.length; j++) {
+  for (let i = 0; i < spamWords.length; i += 1) {
+    for (let j = 0; j < reviews.length; j += 1) {
       if (reviews[j].includes(spamWords[i])) {
         strikes += 1;
       }

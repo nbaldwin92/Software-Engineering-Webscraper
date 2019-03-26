@@ -8,6 +8,8 @@ class Form extends Component {
 
     this.state = {
       url: '',
+      loading: false,
+      score: '',
     };
   }
 
@@ -15,7 +17,17 @@ class Form extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
-  onSubmitURL = () => {
+  showForm = () => {
+    this.setState({ score: '', loading: false });
+  };
+
+  onSubmitURL = e => {
+    e.preventDefault();
+
+    this.setState({
+      loading: true,
+    });
+
     // TODO Post to server
     const { url } = this.state;
     axios
@@ -24,15 +36,35 @@ class Form extends Component {
           url,
         },
       })
-      .then(function(response) {
-        console.log(response.data);
+      .then(response => {
+        const score = response.data;
+        this.setState({
+          loading: false,
+          score,
+        });
       })
       .catch(function(error) {
-        console.log('error');
+        console.log(error);
       });
   };
 
   render() {
+    const { score, loading } = this.state;
+
+    if (score !== '') {
+      return (
+        <div>
+          <p>Score: {this.state.score}</p>{' '}
+          <button onClick={this.showForm} type="button" className="btn btn-dark">
+            Back to Form
+          </button>
+        </div>
+      );
+    }
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+
     return (
       <div>
         <h1>
@@ -47,6 +79,7 @@ class Form extends Component {
           <label htmlFor="url"> URL:</label>
           <input id="url" type="text" name="name" value={this.state.url} onChange={this.onChange} />
           <input type="submit" value="Submit" onClick={this.onSubmitURL} />
+          <p>{this.state.score}</p>
         </form>
       </div>
     );
