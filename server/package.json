@@ -12,8 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.2",
+    "body-parser": "^1.18.3",
     "cheerio": "^1.0.0-rc.2",
-    "nightmare": "^3.0.1"
+    "express": "^4.16.4",
+    "nightmare": "^3.0.1",
+    "wait.for": "^0.6.6"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",
