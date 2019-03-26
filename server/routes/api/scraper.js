@@ -1,7 +1,4 @@
 /* eslint-disable no-use-before-define */
-const express = require('express');
-
-const router = express.Router();
 
 const Nightmare = require('nightmare');
 const cheerio = require('cheerio');
@@ -12,8 +9,6 @@ const cheerio = require('cheerio');
 // https://www.ebay.com/itm/Dyson-DC39-Origin-Canister-Vacuum-Yellow-New/272647620945?_trkparms=pageci%3Abbb70dd5-2b1e-11e9-b85f-74dbd180d4f1%7Cparentrq%3Ac9d8e3561680a9c560ea5644ffccb79c%7Ciid%3A1#rwid
 
 const flags = ['scam', 'fraud', 'corrupt', 'fraudulent', 'sjf'];
-
-const method = {};
 
 const rating = async url => {
   const result = [];
@@ -26,7 +21,7 @@ const rating = async url => {
       .wait('.review-item-content')
       .evaluate(() => document.querySelector('body').innerHTML)
       .end()
-      .then(async (response, callback) => {
+      .then(async response => {
         const reviews = await getEbayProductReviews(response);
         const safetyRating = await scamAlgorithm(reviews, flags);
         result.push(safetyRating);
@@ -55,21 +50,21 @@ const rating = async url => {
 
 // Add getAmazonData
 
-const getEbaySellerReviews = html => {
-  // Seller reviews (max 200 per page)
-  const productData = [];
-  const $ = cheerio.load(html);
-  $('tr.bot')
-    .next('tr')
-    .children(':first-child')
-    .next('td')
-    .each((i, elem) => {
-      productData.push({
-        content: $(elem).text(),
-      });
-    });
-  return productData;
-};
+// const getEbaySellerReviews = html => {
+//   // Seller reviews (max 200 per page)
+//   const productData = [];
+//   const $ = cheerio.load(html);
+//   $('tr.bot')
+//     .next('tr')
+//     .children(':first-child')
+//     .next('td')
+//     .each((i, elem) => {
+//       productData.push({
+//         content: $(elem).text(),
+//       });
+//     });
+//   return productData;
+// };
 
 const getEbayProductReviews = html => {
   const productData = [];

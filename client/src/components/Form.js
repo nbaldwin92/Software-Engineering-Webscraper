@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for */
 import React, { Component } from 'react';
 
 import axios from 'axios';
@@ -43,18 +45,16 @@ class Form extends Component {
           score,
         });
       })
-      .catch(function(error) {
-        console.log(error);
-      });
+      .catch(function(error) {});
   };
 
   render() {
-    const { score, loading } = this.state;
+    const { score, loading, url } = this.state;
 
     if (score !== '') {
       return (
         <div>
-          <p>Score: {this.state.score}</p>{' '}
+          <p>Score: {score} ✅</p>{' '}
           <button onClick={this.showForm} type="button" className="btn btn-dark">
             Back to Form
           </button>
@@ -62,14 +62,14 @@ class Form extends Component {
       );
     }
     if (loading) {
-      return <p>Loading...</p>;
+      return <p>Loading...⏲️</p>;
     }
 
     return (
       <div>
         <h1>
           E-COMMERCE <br />
-          ANALYZER
+          ANALYZER 🛍️
         </h1>
         <p>
           Ensure the listing on eBay or Amazon is safe! <br /> We will run the product through our <br />
@@ -77,9 +77,9 @@ class Form extends Component {
         </p>
         <form>
           <label htmlFor="url"> URL:</label>
-          <input id="url" type="text" name="name" value={this.state.url} onChange={this.onChange} />
+          <input id="url" type="text" name="name" value={url} onChange={this.onChange} />
           <input type="submit" value="Submit" onClick={this.onSubmitURL} />
-          <p>{this.state.score}</p>
+          <p>{score}</p>
         </form>
       </div>
     );
