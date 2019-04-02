@@ -8,7 +8,7 @@ const cheerio = require('cheerio');
 // Product Reviews
 // https://www.ebay.com/itm/Dyson-DC39-Origin-Canister-Vacuum-Yellow-New/272647620945?_trkparms=pageci%3Abbb70dd5-2b1e-11e9-b85f-74dbd180d4f1%7Cparentrq%3Ac9d8e3561680a9c560ea5644ffccb79c%7Ciid%3A1#rwid
 
-const flags = ['scam', 'fraud', 'corrupt', 'fraudulent', 'sjf'];
+const flags = ['the', 'fraud', 'corrupt', 'fraudulent', 'sjf'];
 
 const rating = async url => {
   const result = [];
@@ -29,6 +29,23 @@ const rating = async url => {
       .catch(err => {
         'NOAH GOT AN ERROR';
       });
+  } else if (url.includes('amazon')) {
+    await nightmare
+      .goto(link)
+      .click('a.a-link-emphasis')
+      .wait('.review-text-content')
+      .evaluate(() => document.querySelector('body').innerHTML)
+      .end()
+      .then(async response => {
+        const reviews = await getAmazonProductReviews(response);
+        const safetyRating = await scamAlgorithm(reviews, flags);
+        result.push(safetyRating);
+      })
+      .catch(err => {
+        'NOAH GOT AN ERROR';
+      });
+  } else {
+    return;
   }
   return result;
 };
@@ -75,6 +92,15 @@ const getEbayProductReviews = html => {
   return productData;
 };
 
+const getAmazonProductReviews = html => {
+  const productData = [];
+  const $ = cheerio.load(html);
+  $('.review-text-content').each((i, elem) => {
+    productData.push($(elem).text());
+  });
+  return productData;
+};
+
 const scamAlgorithm = (reviews, spamWords) => {
   let strikes = 0;
   let safetyRating = 100;
@@ -91,7 +117,7 @@ const scamAlgorithm = (reviews, spamWords) => {
   if (strikes > 3 && strikes < 10) {
     safetyRating -= 50;
   }
-  if (strikes > 10) {
+  if (strikes >= 10) {
     safetyRating -= 100;
   }
   return safetyRating;

@@ -6,7 +6,7 @@
     "axios": "^0.18.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-loading-spin": "^1.0.9",
+    "react-minimal-pie-chart": "^3.5.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "save": "^2.3.3",

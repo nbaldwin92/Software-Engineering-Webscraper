@@ -7,8 +7,6 @@ import styled from 'styled-components';
 
 import axios from 'axios';
 
-import LoadingSpin from 'react-loading-spin';
-
 import Home from './Home';
 
 const Button = styled.button`
@@ -49,33 +47,37 @@ class Form extends Component {
   onSubmitURL = e => {
     e.preventDefault();
 
-    this.setState({
-      loading: true,
-    });
-
-    // TODO Post to server
     const { url } = this.state;
-    axios
-      .get('/api/scraper', {
-        params: {
-          url,
-        },
-      })
-      .then(response => {
-        const { cancel } = this.state;
-        const score = response.data;
-        if (cancel) {
-          this.setState({
-            score: '',
-          });
-        } else {
-          this.setState({
-            loading: false,
-            score,
-          });
-        }
-      })
-      .catch(function(error) {});
+
+    if (url.includes('amazon.com') || url.includes('ebay.com')) {
+      this.setState({
+        loading: true,
+      });
+
+      axios
+        .get('/api/scraper', {
+          params: {
+            url,
+          },
+        })
+        .then(response => {
+          const { cancel } = this.state;
+          const score = response.data;
+          if (cancel) {
+            this.setState({
+              score: '',
+            });
+          } else {
+            this.setState({
+              loading: false,
+              score,
+            });
+          }
+        })
+        .catch(function(error) {});
+    } else {
+      alert('Please enter a valid url');
+    }
   };
 
   render() {
@@ -94,7 +96,7 @@ class Form extends Component {
     if (loading) {
       return (
         <div>
-          <LoadingSpin width="200px" size="200px" primaryColor="yellow" secondaryColor="#333" />
+          <p>Loading...</p>
           <Button onClick={this.cancelSearch}>Cancel</Button>
         </div>
       );
@@ -112,7 +114,7 @@ class Form extends Component {
         </p>
         <form>
           <label htmlFor="url"> URL:</label>
-          <input id="url" type="text" name="name" value={url} onChange={this.onChange} />
+          <input className="form-control" id="url" type="text" name="name" value={url} onChange={this.onChange} />
           <input type="submit" value="Submit" onClick={this.onSubmitURL} />
           <p>{score}</p>
         </form>
