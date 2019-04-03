@@ -7,10 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "start": "node server.js",
-    "heroku-postbuild": "npm install"
+    "start": "node server.js"
   },
-  "keywords": [],
+  "engines": {
+    "node": "10.13.0"
+  },
+  "keywords": [
+    "heroku"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
