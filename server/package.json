@@ -10,7 +10,7 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": "10.13.0"
+    "node": "v10.13.0"
   },
   "keywords": [
     "heroku"
