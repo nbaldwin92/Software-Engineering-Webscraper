@@ -84,9 +84,12 @@ class Form extends Component {
     const { score, loading, url } = this.state;
 
     if (score !== '') {
+      let emoji;
       return (
         <div>
-          <p>Score: {score} ✅</p>{' '}
+          <p>
+            Score: {score} {score == 100 ? (emoji = '✅') : (emoji = '⚠️')}{' '}
+          </p>{' '}
           <Button onClick={this.showForm} type="button" className="btn btn-dark">
             ◀️ Back to Form
           </Button>
