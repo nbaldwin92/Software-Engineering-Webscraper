@@ -54,7 +54,7 @@ class Form extends Component {
         loading: true,
       });
 
-      axios
+      axios // Send URL to server
         .get('/api/scraper', {
           params: {
             url,
@@ -89,6 +89,7 @@ class Form extends Component {
         <div>
           <p>
             Score: {score} {score == 100 ? (emoji = '✅') : (emoji = '⚠️')}{' '}
+            {/* If score is less than 100, print a caution symbol. Otherwise print a checkmark */}
           </p>{' '}
           <Button onClick={this.showForm} type="button" className="btn btn-dark">
             ◀️ Back to Form
@@ -118,7 +119,7 @@ class Form extends Component {
         <form>
           <label htmlFor="url"> URL:</label>
           <input className="form-control" id="url" type="text" name="name" value={url} onChange={this.onChange} />
-          <input type="submit" value="Submit" onClick={this.onSubmitURL} />
+          <input type="submit" value="Submit" onClick={this.onSubmitURL} /> {/* Pass URL to function onSubmitURL */}
           <p>{score}</p>
         </form>
       </div>

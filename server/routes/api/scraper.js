@@ -11,10 +11,12 @@ const cheerio = require('cheerio');
 const flags = ['the', 'fraud', 'corrupt', 'fraudulent', 'scam'];
 
 const rating = async url => {
+  // Take URL and scrape the page, parse HTML and compute safety score
   const result = [];
   const nightmare = new Nightmare({ show: false });
   const link = url;
   if (url.includes('ebay')) {
+    // Scrape ebay page
     await nightmare
       .goto(link)
       .click('.reviews-header .sar-btn')
@@ -31,6 +33,7 @@ const rating = async url => {
         'NOAH GOT AN ERROR';
       });
   } else if (url.includes('amazon')) {
+    // Scrape amazon page
     await nightmare
       .goto(link)
       .click('a.a-link-emphasis')
@@ -51,40 +54,8 @@ const rating = async url => {
   return result;
 };
 
-//   nightmare //Ebay Seller Reviews
-//     .goto(url)
-//     .wait("body")
-//     .evaluate(() => document.querySelector("body").innerHTML)
-//     .end()
-//     .then(response => {
-//       console.log(getEbaySellerReviews(response));
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// } else {
-//   console.log("not working");
-// }
-
-// Add getAmazonData
-
-// const getEbaySellerReviews = html => {
-//   // Seller reviews (max 200 per page)
-//   const productData = [];
-//   const $ = cheerio.load(html);
-//   $('tr.bot')
-//     .next('tr')
-//     .children(':first-child')
-//     .next('td')
-//     .each((i, elem) => {
-//       productData.push({
-//         content: $(elem).text(),
-//       });
-//     });
-//   return productData;
-// };
-
 const getEbayProductReviews = html => {
+  // Parse html from ebay page
   const productData = [];
   const $ = cheerio.load(html);
   $('.review-item-content').each((i, elem) => {
@@ -95,6 +66,7 @@ const getEbayProductReviews = html => {
 };
 
 const getAmazonProductReviews = html => {
+  // Parse html from amazon page
   const productData = [];
   const $ = cheerio.load(html);
   $('.review-text-content').each((i, elem) => {
@@ -104,6 +76,7 @@ const getAmazonProductReviews = html => {
 };
 
 const scamAlgorithm = (reviews, spamWords) => {
+  // Compute algorithm based on spamWords
   let strikes = 0;
   let safetyRating = 100;
   for (let i = 0; i < spamWords.length; i += 1) {
@@ -124,7 +97,5 @@ const scamAlgorithm = (reviews, spamWords) => {
   }
   return safetyRating;
 };
-
-// TODO Future: If price is way below average for that product, likely scam
 
 module.exports.rating = rating;
